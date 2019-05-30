@@ -19,8 +19,7 @@ public class CarService{
 	}
 
 
-	public List<Car> findAll(String userId)
-	{
+	public List<Car> findAll(String userId) throws Exception {
 		return carConnector.getAllCars(userId);
 	}
 }
