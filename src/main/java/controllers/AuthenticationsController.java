@@ -26,8 +26,7 @@ public class AuthenticationsController {
 		try {
 			return Response.ok(jwt.issueToken(credentials)).build();
 		} catch (Exception e) {
-			JsonObject errorObject = Json.createObjectBuilder().add("message", e.getLocalizedMessage()).build();
-			return Response.status(Response.Status.UNAUTHORIZED).entity(errorObject).build();
+			return Response.status(Response.Status.UNAUTHORIZED).entity(e.getLocalizedMessage()).build();
 		}
 	}
 

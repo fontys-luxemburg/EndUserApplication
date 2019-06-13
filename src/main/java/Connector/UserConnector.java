@@ -10,13 +10,17 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.POST;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -38,36 +42,26 @@ public class UserConnector {
 	}
 
 	public String login(Credentials c) {
-		AuthResponse authResponse = null;
-		HttpURLConnection http = httpConnector.createConnection("api/authentication");
 		try {
-			http.setRequestMethod("POST");
+			String baseURI = "http://178.62.217.247";
+			int port = 9060;
+			String basePath = "/government/api/authentication";
+			HttpPost postForum = new HttpPost(baseURI + ":" + port + basePath);
+			HttpClient client = HttpClientBuilder.create().build();
 
-			http.setRequestProperty("Content-Type", "application/json; utf-8");
-			http.setRequestProperty("Accept", "application/json");
-			http.setDoOutput(true);
-			String jsonInputString = gson.toJson(c);
-			http.setRequestProperty("body",jsonInputString);
-			try (OutputStream os = http.getOutputStream()) {
-				http.connect();
-				//byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
-				System.out.println(jsonInputString);
-				//os.write(input);
-				try (BufferedReader br = new BufferedReader(
-						new InputStreamReader(http.getInputStream(), StandardCharsets.UTF_8))) {
-					StringBuilder response = new StringBuilder();
-					String responseLine;
-					while ((responseLine = br.readLine()) != null) {
-						response.append(responseLine.trim());
-					}
-					System.out.println(response.toString());
-					authResponse = gson.fromJson(response.toString(), AuthResponse.class);
-				}
-			}
+			StringEntity requestEntity = new StringEntity(
+					gson.toJson(c),
+					ContentType.APPLICATION_JSON);
+			postForum.setEntity(requestEntity);
+			HttpResponse response = client.execute(postForum);
+
+
+			return EntityUtils.toString(response.getEntity());
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return authResponse.getToken();
+
+		return null;
 	}
 }

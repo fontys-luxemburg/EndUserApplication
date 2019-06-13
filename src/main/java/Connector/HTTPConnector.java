@@ -11,7 +11,7 @@ public class HTTPConnector {
 	HttpURLConnection createConnection(String endpoint) {
 		HttpURLConnection http =  null;
 		try {
-			URL url = new URL("http://localhost:8080/government/"+endpoint);
+			URL url = new URL("http://http://178.62.217.247:9060/government/"+endpoint);
 			URLConnection con = url.openConnection();
 			http = (HttpURLConnection) con;
 			http.setDoOutput(true);

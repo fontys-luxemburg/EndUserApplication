@@ -22,7 +22,7 @@ public class CarConnector {
 
 	public List<Car> getAllCars(String userId) throws Exception {
 		//Call the Government
-		HttpURLConnection http = httpConnector.createConnection("api/car/iets");
+		HttpURLConnection http = httpConnector.createConnection("api/user/"+userId+"/ownerships");
 		http.getResponseMessage();
 		return new ArrayList<>();
 	}

@@ -38,19 +38,36 @@
         </div>
         <div class="container mx-auto px-4">
             <router-view/>
+
         </div>
         <div class="h-16"></div>
     </div>
+
 </template>
 
 <script>
-
+    import {mapState} from "vuex";
     export default {
-        name: 'app',
+        name: "app",
+        computed: {
+            ...mapState({
+                loggedIn: state => state.auth.status.loggedIn,
+                user: state => state.auth.user
+            })
+        },
         components: {}
     }
 </script>
 
 <style>
 
+    #app {
+        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+        color: #2c3e50;
+        margin-top: 60px;
+    }
 </style>
+

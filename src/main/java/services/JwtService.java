@@ -8,6 +8,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.google.gson.Gson;
 import models.AuthResponse;
 import models.Credentials;
 import models.Role;
@@ -49,53 +50,42 @@ public class JwtService implements ContainerRequestFilter {
 	private static final String REALM = "example";
 	private Algorithm algorithm;
 	private String ISSUER;
+
+	@Inject
 	@PropertiesFromFile
 	Properties props;
+
 	@PostConstruct
 	public void initialize() {
+		System.out.println("Starting....."+ props.getProperty("secret_key"));
 		algorithm = Algorithm.HMAC256(props.getProperty("secret_key"));
+		System.out.println(algorithm);
 		ISSUER = "endUserAPI";
+		System.out.println("Done!");
 	}
 
 	public AuthResponse issueToken(Credentials credentials) throws Exception {
-		//TODO Implement the connector class.
-		User user = authenticate(credentials);
+		String govString = userConnector.login(credentials);
 
-
+		AuthResponse tokenGovernment = new Gson().fromJson(govString, AuthResponse.class);
+		if(tokenGovernment.getEmail() ==null)throw new Exception("Email and/or Password is wrong!");
+		User user = decodeJWT(tokenGovernment);
 		return new AuthResponse(user,JWT.create()
 				.withIssuer(ISSUER)
-				.withClaim("Email",user.getEmail()).withClaim("Role",user.getRole().toString()).withIssuedAt(new Date())
+				.withClaim("Email",user.getEmail()).withIssuedAt(new Date()).withExpiresAt(new Date(System.currentTimeMillis() +3600 * 1000))
 				.sign(algorithm));
-	}
-
-	private User authenticate(Credentials credentials) throws Exception {
-		Optional<User> user = userConnector.findByEmail(credentials.getEmail());
-
-		if (!user.isPresent()) {
-			throw new Exception("Username or Password incorrect");
-		}
-
-		if (!encodeSHA256(credentials.getPassword()).equals(user.get().getPassword())) {
-			throw new Exception("Username or Password incorrect");
-		}
-
-		return user.get();
 	}
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
-		// Get the Authorization header from the request
 		String authorizationHeader =
 				requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-		// Validate the Authorization header
-		if (!isTokenBasedAuthentication(authorizationHeader)) {
+			if (!isTokenBasedAuthentication(authorizationHeader)) {
 			abortWithUnauthorized(requestContext);
 			return;
 		}
-		// Extract the token from the Authorization header
 		String token = authorizationHeader
 				.substring(AUTHENTICATION_SCHEME.length()).trim();
 		try {
-			// Validate the token
 			validateToken(token);
 		} catch (Exception e) {
 			abortWithUnauthorized(requestContext);
@@ -103,9 +93,6 @@ public class JwtService implements ContainerRequestFilter {
 	}
 
 	private boolean isTokenBasedAuthentication(String authorizationHeader) {
-		// Check if the Authorization header is valid
-		// It must not be null and must be prefixed with "Bearer" plus a whitespace
-		// The authentication scheme comparison must be case-insensitive
 		return authorizationHeader != null && authorizationHeader.toLowerCase()
 				.startsWith(AUTHENTICATION_SCHEME.toLowerCase() + " ");
 	}
@@ -121,39 +108,23 @@ public class JwtService implements ContainerRequestFilter {
 	}
 
 	private void validateToken(String token) throws Exception {
-		// Check if the token was issued by the server and if it's not expired
-		// Throw an Exception if the token is invalid
-		Algorithm algorithm = Algorithm.HMAC256(props.getProperty("secret_key"));
 		JWTVerifier verifier = com.auth0.jwt.JWT.require(algorithm)
 				.withIssuer(ISSUER)
 				.build(); //Reusable verifier instance
 		DecodedJWT jwt = verifier.verify(token);
-		Method method = resourceInfo.getResourceMethod();
-		if (method != null) {
-			String roles = jwt.getClaim("Role").asString();
-			Role roleUser = Role.valueOf(roles);
-			List<Role> methodRoles = extractRoles(method);
-			if (!methodRoles.contains(roleUser)) {
-				throw new Exception("no valid Role.");
-			}
-		}
+		if(jwt.getExpiresAt().before(new Date()))throw new Exception("Token expired!");
 	}
-	private List<Role> extractRoles(AnnotatedElement annotatedElement) {
-		if (annotatedElement == null) {
-			return new ArrayList<>();
-		} else {
-			Secured secured = annotatedElement.getAnnotation(Secured.class);
-			if (secured == null) {
-				return new ArrayList<>();
-			} else {
-				Role[] allowedRoles = secured.value();
-				return Arrays.asList(allowedRoles);
-			}
-		}
-	}
-	private static String encodeSHA256(String password) throws NoSuchAlgorithmException {
-		MessageDigest digest = MessageDigest.getInstance("SHA-256");
-		byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-		return Base64.getEncoder().encodeToString(hash);
+
+	private User decodeJWT(AuthResponse a){
+		User u = new User();
+		Algorithm algorithm = Algorithm.HMAC256(props.getProperty("secret_key2"));
+		JWTVerifier verifier = com.auth0.jwt.JWT.require(algorithm)
+				.withIssuer("government_api")
+				.build();
+		DecodedJWT jwt = verifier.verify(a.getToken());
+		u.setEmail(jwt.getSubject());
+		u.setName(a.getName());
+		u.setId(a.getId());
+		return u;
 	}
 }
