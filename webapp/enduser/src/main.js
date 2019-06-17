@@ -2,11 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router';
 import '@/assets/css/tailwind.css'
-import routes from './routes';
+import {router} from './routes';
+import store from './store';
+
 Vue.config.productionTip = false
 Vue.use(VueRouter);
 
 new Vue({
-  routes,
+  router,store,
   render: h => h(App)
 }).$mount('#app')

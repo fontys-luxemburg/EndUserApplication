@@ -12,7 +12,7 @@ function login(email, password) {
         body: JSON.stringify({ email, password })
     };
 
-    return fetch('/Enduserapplication/api/authentication', requestOptions)
+    return fetch('/enduser/api/authentication', requestOptions)
         .then(handleResponse)
         .then(user => {
             if (user.token) {

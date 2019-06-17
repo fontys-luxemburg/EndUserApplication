@@ -12,11 +12,11 @@
 
 
             <router-link
-                    v-if="loggedIn"
+                    v-if="true"
                     to="/login"
                     class="flex flex-none items-center pr-8 no-underline text-black ml-16"
             >
-                <div>{{ user.name }}</div>
+                <div>ss</div>
                 <div
                         class="bg-grey-light w-8 h-8 flex items-center justify-center rounded-full ml-4 text-sm"
                 >

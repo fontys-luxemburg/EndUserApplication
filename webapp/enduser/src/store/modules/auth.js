@@ -1,6 +1,7 @@
 
-import { router } from "../../router";
+
 import { userService } from "../../services/users.service";
+import * as router from "vue-router";
 
 const user = JSON.parse(localStorage.getItem("user"));
 const initialState = user
