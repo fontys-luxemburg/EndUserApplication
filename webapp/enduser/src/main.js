@@ -3,12 +3,15 @@ import App from './App.vue'
 import VueRouter from 'vue-router';
 import '@/assets/css/tailwind.css'
 import {router} from './routes';
-import store from './store';
+import VueMoment from 'vue-moment'
+import moment from 'moment-timezone'
 
 Vue.config.productionTip = false
 Vue.use(VueRouter);
-
+Vue.use(VueMoment, {
+    moment,
+})
 new Vue({
-  router,store,
+  router,
   render: h => h(App)
 }).$mount('#app')

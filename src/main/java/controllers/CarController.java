@@ -25,12 +25,4 @@ public class CarController {
 		return Response.ok(carList).build();
 	}
 
-	@GET
-	@Path("/test")public Response test(){
-		final int R = 6371;
-
-		double a = (Point2D.distance(51.562820,5.084620,51.563299,5.090967)*R);
-
-		return Response.ok(a).build();
-	}
 }

@@ -52,8 +52,9 @@ public class CarConnector {
 			if(o.getEndDate()!= null)continue;;
 			try {
 				getCar.set(new HttpGet(baseURI + ":" + port + finalBasePath + o.getVehicleRegistrationID()));
-				getCar.get().setHeader("Authorization", "bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJq" +
-						"b2huZG9lQHRlc3QuY29tIiwiaXNzIjoiZ292ZXJubWVudF9hcGkifQ.CG7PA_mWJvIK6bwLSH2kYj-puMRFGK9_zUHTpJ2OSXI");
+				getCar.get().setHeader("Authorization", "bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9." +
+						"eyJzdWIiOiJqb2huZG9lQHRlc3QuY29tIiwiaXNzIjoiZ292ZXJubWVudF9hcGkifQ.C" +
+						"G7PA_mWJvIK6bwLSH2kYj-puMRFGK9_zUHTpJ2OSXI");
 				HttpResponse response2 = client.execute(getCar.get());
 				carlist.add(gson.fromJson(EntityUtils.toString(response2.getEntity()), Car.class));
 
