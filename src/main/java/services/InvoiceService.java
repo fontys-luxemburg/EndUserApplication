@@ -18,4 +18,7 @@ public class InvoiceService {
 	public List<Invoice> getAll(Long userId) throws Exception{
 		return invoiceConnector.getAllInvoices(userId);
 	}
+	public Invoice payInvoice(Long userId)throws Exception{
+		return invoiceConnector.payInvoice(userId,2019,6);
+	}
 }

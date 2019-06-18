@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Vue from "vue";
 import carOverview from "./views/car/carOverview";
 import invoiceOverview from "./views/invoice/invoiceOverview";
+import invoiceDetails from "./views/invoice/invoiceDetails";
 
 
 Vue.use(Router);
@@ -24,6 +25,11 @@ export const router = new Router({
             path:"/invoiceOverview",
             name:"invoiceOverview",
             component:invoiceOverview
+        },
+        {
+            path:'/invoiceDetails/',
+            name:'invoiceDetails',
+            component:invoiceDetails
         }
     ]
 });

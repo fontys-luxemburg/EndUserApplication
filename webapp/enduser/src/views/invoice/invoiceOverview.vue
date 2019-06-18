@@ -13,11 +13,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="invoice in invoices" v-bind:key="invoices.id">
+                    <tr v-for="invoice in invoices" v-bind:key="invoice.id">
                         <td> {{formatDate(invoice.startDate)}}</td>
                         <td> {{formatDate(invoice.endDate)}}</td>
                         <td>€ 100,00</td>
-                        <td v-if="invoice.payDate == null"> Pay now!!</td>
+                        <td v-if="invoice.payDate == null"> <input type="button" @click="redirect(invoice)" value="Pay now!" /></td>
                         <td v-if="invoice.payDate !=null">Payed on {{formatDate(invoice.payDate)}}</td>
                         <td>Meer info </td>
                     </tr>
@@ -50,7 +50,6 @@
             'Authorization': 'Bearer ' + localStorage.getItem('token')
         },
         methods: {
-            
             formatDate(unix) {
                 const date = new Date(unix * 1);
                 const year = date.getFullYear();
@@ -71,6 +70,10 @@
                 }).catch(e => {
                     console.log(e);
                 });
+            },
+            redirect:function (invoice) {
+                localStorage.setItem('invoice',JSON.stringify(invoice));
+                this.$router.push('/invoiceDetails/');
             }
         }
     }
