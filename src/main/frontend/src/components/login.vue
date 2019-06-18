@@ -5,12 +5,13 @@
             <form role="form" @submit="login">
                 <div class="mb-4">
                     <label class="block mb-2">Email</label>
-                    <input v-model="email" placeholder="email@email.example" class="bg-grey-lightest p-4 block rounded w-full">
+                    <input v-model="email" placeholder="email@email.example" class="bg-gray-100 p-4 block rounded w-full">
                 </div>
                 <div class="mb-8">
                     <label class="block mb-2">Password</label>
-                    <input v-model="password" placeholder="password" type=password class="bg-grey-lightest p-4 block rounded w-full">                </div>
-                <button :disabled="loggingIn" class="w-full bg-blue p-4 rounded text-white">Log in</button>
+                    <input v-model="password" placeholder="password" type=password class="bg-gray-100 p-4 block rounded w-full">
+                </div>
+                <button :disabled="loggingIn" class="w-full bg-blue-500 p-4 rounded text-white">Log in</button>
             </form>
         </div>
     </div>

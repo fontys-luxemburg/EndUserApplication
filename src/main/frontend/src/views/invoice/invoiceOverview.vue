@@ -64,7 +64,7 @@
             getAllInvoices: function () {
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
 
-                axios.get('/enduser/api/invoice/'+localStorage.getItem('userId')).then(respone => {
+                axios.get('/api/invoice/'+localStorage.getItem('userId')).then(respone => {
                     console.log(respone.data);
                     this.invoices = respone.data;
                 }).catch(e => {

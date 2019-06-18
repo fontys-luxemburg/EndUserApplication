@@ -1,7 +1,6 @@
 <template>
     <div id="app">
-
-        <div class="bg-white p-2 border-b border-grey-light mb-8 flex justify-between items-center">
+        <div class="bg-white p-2 border-b border-grey-300 mb-8 flex justify-between items-center">
             <router-link to="/" class="flex-none mr-16">
                 <img
                         alt="Gouvernement du Grand-Duché de Luxembourg"
@@ -79,16 +78,3 @@
         }
     }
 </script>
-
-<style>
-
-    #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #2c3e50;
-        margin-top: 60px;
-    }
-</style>
-

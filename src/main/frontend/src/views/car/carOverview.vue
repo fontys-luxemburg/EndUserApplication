@@ -30,7 +30,7 @@
         methods: {
             getAllCars: function () {
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
-                axios.get('/enduser/api/car/'+localStorage.getItem('userId')).then(respone => {
+                axios.get('/api/car/'+localStorage.getItem('userId')).then(respone => {
                     console.log(respone.data);this.cars = respone.data;
                 }).catch(e => {
                     console.log(e);
