@@ -2,71 +2,80 @@ package models;
 
 import java.util.List;
 
-public class Invoice extends BaseModel{
+public class Invoice extends BaseModel {
 
-	private String user_name;
-	private Long user_id;
-	private String registrationId;
-	private String startDate;
-	private String endDate;
-	private List<Trip> trips;
-	private String payDate;
+    private String user_name;
+    private Long user_id;
+    private String registrationId;
+    private String startDate;
+    private String endDate;
+    private List<Trip> trips;
+    private String payDate;
+    private double totalPrice;
 
-	public String getUser_name() {
-		return user_name;
-	}
+    public List<Trip> getTrips() {
+        return trips;
+    }
 
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
-	}
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
+    }
 
-	public String getRegistrationId() {
-		return registrationId;
-	}
+    public double getTotalPrice() {
+        return totalPrice;
+    }
 
-	public void setRegistrationId(String registrationId) {
-		this.registrationId = registrationId;
-	}
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
-	public String getStartDate() {
-		return startDate;
-	}
+    public String getUser_name() {
+        return user_name;
+    }
 
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
 
-	public String getEndDate() {
-		return endDate;
-	}
+    public String getRegistrationId() {
+        return registrationId;
+    }
 
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
+    public void setRegistrationId(String registrationId) {
+        this.registrationId = registrationId;
+    }
 
-	public List<Trip> getTripDtos() {
-		return trips;
-	}
+    public String getStartDate() {
+        return startDate;
+    }
 
-	public void setTripDtos(List<Trip> trip) {
-		this.trips = trip;
-	}
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
 
-	public Long getUser_id() {
-		return user_id;
-	}
+    public String getEndDate() {
+        return endDate;
+    }
 
-	public void setUser_id(Long user_id) {
-		this.user_id = user_id;
-	}
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public Long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
+    }
 
 
-	public String getPayDate() {
-		return payDate;
-	}
+    public String getPayDate() {
+        return payDate;
+    }
 
-	public Invoice setPayDate(String payDate) {
-		this.payDate = payDate;
-		return this;
-	}
+    public Invoice setPayDate(String payDate) {
+        this.payDate = payDate;
+        return this;
+    }
 }
