@@ -14,9 +14,8 @@ public class PayController {
 	@Inject
 	InvoiceService invoiceService;
 	@POST
-	@Path("{id}")
-	public Response pay(@PathParam("id") Long id) throws Exception{
 
-		return Response.ok(invoiceService.payInvoice(id,2019,6)).build();
+	public Response pay(@QueryParam("user_id")String user_id,@QueryParam("year") int year, @QueryParam("month") int month) throws Exception{
+		return Response.ok(invoiceService.payInvoice(Long.valueOf(user_id),2019,6)).build();
 	}
 }
